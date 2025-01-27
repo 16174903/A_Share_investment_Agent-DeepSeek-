@@ -13,7 +13,7 @@ def valuation_agent(state: AgentState):
     market_cap = data["market_cap"]
 
     reasoning = {}
-
+    metrics["earnings_growth"] = 0.05
     # Calculate working capital change
     working_capital_change = (current_financial_line_item.get(
         'working_capital') or 0) - (previous_financial_line_item.get('working_capital') or 0)
@@ -38,7 +38,8 @@ def valuation_agent(state: AgentState):
         terminal_growth_rate=0.03,
         num_years=5,
     )
-
+    if not market_cap:
+        market_cap+=0.01
     # Calculate combined valuation gap (average of both methods)
     dcf_gap = (dcf_value - market_cap) / market_cap
     owner_earnings_gap = (owner_earnings_value - market_cap) / market_cap
